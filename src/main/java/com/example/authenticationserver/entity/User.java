@@ -10,7 +10,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@Entity
+@Entity(name = "USER")
 public class User extends BaseIdEntity implements UserDetails {
     private static final long serialVersionUID = 1L;
     private String email;
@@ -18,19 +18,19 @@ public class User extends BaseIdEntity implements UserDetails {
     private String password;
     private boolean enabled;
 
-    @Column(name = "account_locked")
+    @Column(name = "ACCOUNT_LOCKED")
     private boolean accountNonLocked;
 
-    @Column(name = "account_expired")
+    @Column(name = "ACCOUNT_EXPIRED")
     private boolean accountNonExpired;
 
-    @Column(name = "credentials_expired")
+    @Column(name = "CREDENTIALS_EXPIRED")
     private boolean credentialsNonExpired;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "role_user", joinColumns = {
-            @JoinColumn(name = "user_id", referencedColumnName = "id") }, inverseJoinColumns = {
-            @JoinColumn(name = "role_id", referencedColumnName = "id") })
+    @JoinTable(name = "ROLE_USER", joinColumns = {
+            @JoinColumn(name = "USER_ID", referencedColumnName = "ID") }, inverseJoinColumns = {
+            @JoinColumn(name = "ROLE_ID", referencedColumnName = "ID") })
     private List<Role> roles;
 
     @Override

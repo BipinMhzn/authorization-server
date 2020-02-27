@@ -68,9 +68,7 @@ public class OAuth2Configuration extends AuthorizationServerConfigurerAdapter {
 
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-        clients
-                .jdbc(dataSource)
-                .passwordEncoder(passwordEncoder);
+        clients.jdbc(dataSource).passwordEncoder(passwordEncoder);
     }
 
     @Bean

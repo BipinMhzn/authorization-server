@@ -3,14 +3,14 @@ package com.example.authenticationserver.entity;
 import javax.persistence.*;
 import java.util.List;
 
-@Entity
+@Entity(name = "ROLE")
 public class Role extends BaseIdEntity {
     private String name;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "permission_role", joinColumns = {
-            @JoinColumn(name = "role_id", referencedColumnName = "id") }, inverseJoinColumns = {
-            @JoinColumn(name = "permission_id", referencedColumnName = "id") })
+    @JoinTable(name = "PERMISSION_ROLE", joinColumns = {
+            @JoinColumn(name = "ROLE_ID", referencedColumnName = "ID") }, inverseJoinColumns = {
+            @JoinColumn(name = "PERMISSION_ID", referencedColumnName = "ID") })
     private List<Permission> permissions;
 
     public String getName() {

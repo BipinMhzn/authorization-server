@@ -1,5 +1,5 @@
 server:
-  port: 9090
+  port: 9001
 
 spring:
   datasource:
@@ -7,12 +7,18 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: root
-
+#    tomcat:
+#      test-while-idle: true
+#      validation-query: SELECT 1
+#      initialization-mode: never
+#      platform: mysql
   jpa:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
     hibernate:
       ddl-auto: validate
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
 
 check-user-scopes: true
