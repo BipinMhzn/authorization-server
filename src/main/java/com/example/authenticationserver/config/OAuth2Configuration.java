@@ -9,6 +9,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
@@ -30,21 +31,21 @@ public class OAuth2Configuration extends AuthorizationServerConfigurerAdapter {
     @Value("${check-user-scopes}")
     private Boolean checkUserScopes;
 
-    private final DataSource dataSource;
-    private final PasswordEncoder passwordEncoder;
-    private final UserDetailsService userDetailsService;
-    private final ClientDetailsService clientDetailsService;
+    @Autowired
+    private DataSource dataSource;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private UserDetailsService userDetailsService;
+
+    @Autowired
+    private ClientDetailsService clientDetailsService;
 
     @Autowired
     @Qualifier("authenticationManagerBean")
     private AuthenticationManager authenticationManager;
-
-    public OAuth2Configuration(DataSource dataSource, PasswordEncoder passwordEncoder, UserDetailsService userDetailsService, ClientDetailsService clientDetailsService) {
-        this.dataSource = dataSource;
-        this.passwordEncoder = passwordEncoder;
-        this.userDetailsService = userDetailsService;
-        this.clientDetailsService = clientDetailsService;
-    }
 
     @Bean
     public OAuth2RequestFactory requestFactory() {
@@ -63,6 +64,13 @@ public class OAuth2Configuration extends AuthorizationServerConfigurerAdapter {
         JwtAccessTokenConverter converter = new CustomTokenEnhancer();
         converter.setKeyPair(new KeyStoreKeyFactory(new ClassPathResource("jwt.jks"), "password".toCharArray()).getKeyPair("jwt"));
         return converter;
+    }
+
+    @Override
+    public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
+        clients
+                .jdbc(dataSource)
+                .passwordEncoder(passwordEncoder);
     }
 
     @Bean
